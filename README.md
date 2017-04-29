@@ -1,6 +1,6 @@
 # SysMonitor
 
-![Example](https://github.com/styinx/SysMonitor/example.png)
+![Example](https://github.com/styinx/SysMonitor/blob/master/example.png =120x540)
 ___
 
 ## Development
