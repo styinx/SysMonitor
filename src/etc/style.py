@@ -1,24 +1,17 @@
-COLOR_BACKGROUND    = "rgba(0,0,0,200)"
-COLOR_SYSTEM        = "#FF0000"
-COLOR_HEADER        = "#00FF00"
-COLOR_NORMAL        = "#000000"
-COLOR_TEXT          = "#DDDDDD"
-COLOR_VALUE         = "#3399FF"
-COLOR_EXTRA         = "#FFFF00"
-COLOR_INNER         = "#00DD00"
-COLOR_OUTTER        = "#DD5500"
-COLOR_BUTTON        = "#008800"
+from etc.settings import *
 
-COLOR_WHITE         = "#FFFFFF"
-COLOR_RED           = "#FF0000"
-COLOR_GREEN         = "#00FF00"
-COLOR_BLUE          = "#0000FF"
-COLOR_BLACK         = "#000000"
 
-COLOR_DARK_GREEN    = "#006600"
-COLOR_DARK_RED      = "#990000"
-COLOR_DARK_GREY     = "#555555"
-COLOR_BRIGHT_BLUE   = "#0099FF"
+COLOR_BACKGROUND    = SETTINGS.get("Colors", "background")
+COLOR_SYSTEM        = SETTINGS.get("Colors", "system")
+COLOR_HEADER        = SETTINGS.get("Colors", "header")
+COLOR_TEXT          = SETTINGS.get("Colors", "text")
+COLOR_VALUE         = SETTINGS.get("Colors", "value")
+COLOR_BUTTON        = SETTINGS.get("Colors", "button")
+COLOR_EXTRA         = SETTINGS.get("Colors", "extra")
+COLOR_INNER         = SETTINGS.get("Colors", "inner")
+COLOR_OUTTER        = SETTINGS.get("Colors", "outter")
+COLOR_TAB           = SETTINGS.get("Colors", "tab")
+COLOR_TAB_ACTIVE    = SETTINGS.get("Colors", "tab_active")
 
 STYLE_BACKGROUND  = """background: """ + COLOR_BACKGROUND + """;"""
 
@@ -80,13 +73,13 @@ STYLE_TABWIDGET   = """ QTabWidget
                             border-top-left-radius: 2px;
                             border-top-right-radius: 2px;
                             color: """ + COLOR_TEXT + """;
-                            background: rgba(51,153,255,100);
+                            background: """ + COLOR_TAB + """;
                         }
                         QTabBar::tab:selected
                         {
                             border-bottom: 1px solid """ + COLOR_INNER + """;
                             color: """ + COLOR_TEXT + """;
-                            background: rgba(0,221,0,100);
+                            background: """ + COLOR_TAB_ACTIVE + """;
                         }
 
                         QTabBar QToolButton::left-arrow, QToolButton::right-arrow
