@@ -4,10 +4,11 @@ This application shows information about CPU, GPU, RAM, SWAP, DISK and NET.
 With a config file you can easily choose colors, position and modules of the monitor.
 
 <img align="left" src="https://github.com/styinx/SysMonitor/blob/master/ex_0.png" width="120" height="540" alt="Example"/>
-<img align="left" src="https://github.com/styinx/SysMonitor/blob/master/ex_1.png" width="250" height="426" alt="Example"/>
-<img align="right" src="https://github.com/styinx/SysMonitor/blob/master/ex_2.png" width="250" height="254" alt="Example"/>
+<img align="right" src="https://github.com/styinx/SysMonitor/blob/master/ex_1.png" width="250" height="426" alt="Example"/>
 <img align="right" src="https://github.com/styinx/SysMonitor/blob/master/ex_3.png" width="125" height="490" alt="Example"/>
+<img align="right" src="https://github.com/styinx/SysMonitor/blob/master/ex_2.png" width="250" height="254" alt="Example"/>
 
+___
 
 <img src="https://github.com/styinx/SysMonitor/blob/master/ex_4.png" width="960" height="512" alt="Example"/>
 ___
