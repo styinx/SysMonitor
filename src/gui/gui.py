@@ -17,6 +17,7 @@ REFRESH_RATE_SLOW = 30000
 
 day = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]
 
+
 class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self, icon, parent=None):
         QSystemTrayIcon.__init__(self, icon, parent)
@@ -25,8 +26,9 @@ class SystemTrayIcon(QSystemTrayIcon):
         exitAction.triggered.connect(qApp.quit)
         self.setContextMenu(menu)
 
+
 class Window(QMainWindow):
-    def __init__(self, x, y, w, h, parent = None):
+    def __init__(self, x, y, w, h, parent=None):
         super(Window, self).__init__(parent)
 
         self.sys = SysInfo()
@@ -34,9 +36,9 @@ class Window(QMainWindow):
         self.initUI(x, y, w, h)
 
     def initUI(self, x, y, w, h):
-        self.win        = QFrame()
-        self.mainVBox   = QVBoxLayout()
-        self.timer      = QTimer()
+        self.win = QFrame()
+        self.mainVBox = QVBoxLayout()
+        self.timer = QTimer()
 
         self.mainVBox.setSpacing(0)
         self.mainVBox.setContentsMargins(10, 10, 10, 10)
@@ -57,34 +59,35 @@ class Window(QMainWindow):
         self.timer.timeout.connect(self.updateUI)
         self.timer.start()
 
-#        self.thread.started.connect(self.timer.start)
-#        self.thread.finished.connect(self.updateUI)
+    #        self.thread.started.connect(self.timer.start)
+    #        self.thread.finished.connect(self.updateUI)
 
     def fillUI(self):
         self.sys.update()
 
-        #System Info
+        # System Info
         if "SYSTEM" in self.modules:
-            self.systemFrame    = QFrame()
-            self.systemBox      = QGridLayout(self.systemFrame)
+            self.systemFrame = QFrame()
+            self.systemBox = QGridLayout(self.systemFrame)
 
-            self.topButton      = QPushButton("Toggle to above")
+            self.topButton = QPushButton("Toggle to above")
             self.topButton.setCheckable(True)
             self.topButton.clicked.connect(self.setFlags)
-            self.propButton     = QPushButton("Show Properties")
+            self.propButton = QPushButton("Show Properties")
             self.propButton.clicked.connect(self.showProperties)
-            self.time           = QLabel()
-            self.user           = QLabel()
+            self.time = QLabel()
+            self.user = QLabel()
 
             self.time.setText(color(bold(day[datetime.today().weekday()] + strftime(":  %d-%m-%Y  %H:%M:%S",
-                localtime())), COLOR_EXTRA))
+                                                                                    localtime())), COLOR_EXTRA))
             self.user.setText(color(bold(str(self.sys.USER_user())) + color(" up since ", COLOR_TEXT)
-                + bold(strftime("%H:%M", localtime(self.sys.USER_uptime()))), COLOR_EXTRA))
+                                    + bold(strftime("%H:%M", localtime(self.sys.USER_uptime()))), COLOR_EXTRA))
 
             self.systemBox.addWidget(self.topButton, 0, 0, 1, 3, Qt.AlignCenter)
             self.systemBox.addWidget(self.propButton, 1, 0, 1, 3, Qt.AlignCenter)
             self.systemBox.addWidget(QLabel(color(bold(self.sys.osName), COLOR_SYSTEM)), 2, 0, 1, 3, Qt.AlignCenter)
-            self.systemBox.addWidget(QLabel(color(bold(self.sys.osArchitecture), COLOR_SYSTEM)), 3, 0, 1, 3, Qt.AlignCenter)
+            self.systemBox.addWidget(QLabel(color(bold(self.sys.osArchitecture), COLOR_SYSTEM)), 3, 0, 1, 3,
+                                     Qt.AlignCenter)
             self.systemBox.addWidget(self.time, 4, 0, 1, 3, Qt.AlignCenter)
             self.systemBox.addWidget(self.user, 5, 0, 1, 3, Qt.AlignCenter)
 
@@ -92,18 +95,18 @@ class Window(QMainWindow):
             self.systemBox.setSpacing(0)
             self.systemBox.setContentsMargins(0, 0, 0, 0)
 
-        #CPU Info
+        # CPU Info
         if "CPU" in self.modules:
-            self.cpuFrame       = QFrame()
-            self.cpuBox         = QGridLayout(self.cpuFrame)
-            self.cpu            = [None] * 4
-            self.cpuBar         = [None] * 4
+            self.cpuFrame = QFrame()
+            self.cpuBox = QGridLayout(self.cpuFrame)
+            self.cpu = [None] * 4
+            self.cpuBar = [None] * 4
 
             self.cpuBox.addWidget(QLabel(color(bold("CPU"), COLOR_HEADER)), 0, 0, 1, 4, Qt.AlignCenter)
 
             for i in range(0, self.sys.cpus):
-                self.cpu[i]     = QLabel(color(str(self.sys.CPU_temp(i)) + " " + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
-                self.cpuBar[i]  = QProgressBar()
+                self.cpu[i] = QLabel(color(str(self.sys.CPU_temp(i)) + " " + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
+                self.cpuBar[i] = QProgressBar()
                 self.cpuBar[i].setTextVisible(False)
 
                 self.cpuBox.addWidget(QLabel(bold("CPU " + str(i))), i + 1, 0)
@@ -114,29 +117,31 @@ class Window(QMainWindow):
             self.cpuBox.setSpacing(0)
             self.cpuBox.setContentsMargins(0, 0, 0, 0)
 
-        #GPU Info
+        # GPU Info
         if "GPU" in self.modules:
-            self.gpuFrame       = QFrame()
-            self.gpuBox         = QGridLayout(self.gpuFrame)
+            self.gpuFrame = QFrame()
+            self.gpuBox = QGridLayout(self.gpuFrame)
 
             self.gpuname = QLabel(color(bold("NO GRAPHICS CARD"), COLOR_SYSTEM))
             self.gputemp = QLabel(color(str(0) + " " + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
-            self.gpugpu  = QLabel(color(italic(str(0) + " %"), COLOR_VALUE))
-            self.gpufan  = QLabel(color(italic(str(0) + " %"), COLOR_VALUE))
-            self.gpuram  = QLabel(color(italic(str(0) + " %"), COLOR_VALUE))
-            self.gputotal= QLabel(color(str(0) + " MB", COLOR_VALUE))
+            self.gpugpu = QLabel(color(italic(str(0) + " %"), COLOR_VALUE))
+            self.gpufan = QLabel(color(italic(str(0) + " %"), COLOR_VALUE))
+            self.gpuram = QLabel(color(italic(str(0) + " %"), COLOR_VALUE))
+            self.gputotal = QLabel(color(str(0) + " MB", COLOR_VALUE))
             self.gpuused = QLabel(color(bold("used: "), COLOR_TEXT) + color(str(0) + " MB", COLOR_VALUE))
             self.gpufree = QLabel(color(bold("free: "), COLOR_TEXT) + color(str(0) + " MB", COLOR_VALUE))
 
             if self.sys.gpuType == 1:
                 self.gpuname = QLabel(color(self.sys.GPU_name(), COLOR_VALUE))
                 self.gputemp = QLabel(color(str(self.sys.GPU_temp()) + " " + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
-                self.gpugpu  = QLabel(color(italic(str(self.sys.GPU_usage_gpu()) + " %"), COLOR_VALUE))
-                self.gpufan  = QLabel(color(italic(str(self.sys.GPU_usage_fan()) + " %"), COLOR_VALUE))
-                self.gpuram  = QLabel(color(italic(str(self.sys.GPU_usage_mem()) + " %"), COLOR_VALUE))
-                self.gputotal= QLabel(color(str(self.sys.GPU_MEM_total()) + " MB", COLOR_VALUE))
-                self.gpuused = QLabel(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.GPU_MEM_used()) + " MB", COLOR_VALUE))
-                self.gpufree = QLabel(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.GPU_MEM_free()) + " MB", COLOR_VALUE))
+                self.gpugpu = QLabel(color(italic(str(self.sys.GPU_usage_gpu()) + " %"), COLOR_VALUE))
+                self.gpufan = QLabel(color(italic(str(self.sys.GPU_usage_fan()) + " %"), COLOR_VALUE))
+                self.gpuram = QLabel(color(italic(str(self.sys.GPU_usage_mem()) + " %"), COLOR_VALUE))
+                self.gputotal = QLabel(color(str(self.sys.GPU_MEM_total()) + " MB", COLOR_VALUE))
+                self.gpuused = QLabel(
+                    color(bold("used: "), COLOR_TEXT) + color(str(self.sys.GPU_MEM_used()) + " MB", COLOR_VALUE))
+                self.gpufree = QLabel(
+                    color(bold("free: "), COLOR_TEXT) + color(str(self.sys.GPU_MEM_free()) + " MB", COLOR_VALUE))
 
             self.gpubar = QProgressBar()
             self.gpubar.setTextVisible(False)
@@ -166,14 +171,16 @@ class Window(QMainWindow):
             self.gpuBox.setSpacing(0)
             self.gpuBox.setContentsMargins(0, 0, 0, 0)
 
-        #RAM Info
+        # RAM Info
         if "RAM" in self.modules:
-            self.ramFrame       = QFrame()
-            self.ramBox         = QGridLayout(self.ramFrame)
+            self.ramFrame = QFrame()
+            self.ramBox = QGridLayout(self.ramFrame)
 
             self.ramtotal = QLabel(color(str(self.sys.RAM_total()) + " MB", COLOR_VALUE))
-            self.ramused  = QLabel(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.RAM_usage_total()) + " MB", COLOR_VALUE))
-            self.ramfree  = QLabel(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.RAM_free()) + " MB", COLOR_VALUE))
+            self.ramused = QLabel(
+                color(bold("used: "), COLOR_TEXT) + color(str(self.sys.RAM_usage_total()) + " MB", COLOR_VALUE))
+            self.ramfree = QLabel(
+                color(bold("free: "), COLOR_TEXT) + color(str(self.sys.RAM_free()) + " MB", COLOR_VALUE))
 
             self.rambar = QProgressBar()
             self.rambar.setTextVisible(False)
@@ -193,14 +200,16 @@ class Window(QMainWindow):
             self.ramBox.setSpacing(0)
             self.ramBox.setContentsMargins(0, 0, 0, 0)
 
-        #SWAP Info
+        # SWAP Info
         if "SWAP" in self.modules:
-            self.swapFrame      = QFrame()
-            self.swapBox        = QGridLayout(self.swapFrame)
+            self.swapFrame = QFrame()
+            self.swapBox = QGridLayout(self.swapFrame)
 
             self.swaptotal = QLabel(color(str(self.sys.SWAP_total()) + " MB", COLOR_VALUE))
-            self.swapused  = QLabel(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.SWAP_usage_total())+" MB", COLOR_VALUE))
-            self.swapfree  = QLabel(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.SWAP_free())+" MB", COLOR_VALUE))
+            self.swapused = QLabel(
+                color(bold("used: "), COLOR_TEXT) + color(str(self.sys.SWAP_usage_total()) + " MB", COLOR_VALUE))
+            self.swapfree = QLabel(
+                color(bold("free: "), COLOR_TEXT) + color(str(self.sys.SWAP_free()) + " MB", COLOR_VALUE))
 
             self.swapbar = QProgressBar()
             self.swapbar.setTextVisible(False)
@@ -220,23 +229,25 @@ class Window(QMainWindow):
             self.swapBox.setSpacing(0)
             self.swapBox.setContentsMargins(0, 0, 0, 0)
 
-        #DISK Info
+        # DISK Info
         if "DISK" in self.modules:
-            self.diskTab    = QTabWidget()
-            self.diskFrame  = [0] * len(self.sys.disks)
-            self.disktemp   = [0] * len(self.sys.disks)
-            self.diskbar    = [0] * len(self.sys.disks)
+            self.diskTab = QTabWidget()
+            self.diskFrame = [0] * len(self.sys.disks)
+            self.disktemp = [0] * len(self.sys.disks)
+            self.diskbar = [0] * len(self.sys.disks)
 
             for i in range(0, len(self.sys.disks)):
                 if self.sys.disk[i]:
-                    self.diskFrame[i]   = QFrame()
-                    self.diskBox        = QGridLayout(self.diskFrame[i])
+                    self.diskFrame[i] = QFrame()
+                    self.diskBox = QGridLayout(self.diskFrame[i])
 
-                    self.disktotal      = QLabel(color(str(self.sys.DISK_total(i)) + " GB", COLOR_VALUE))
-                    self.disktemp[i]    = QLabel(color(str(self.sys.DISK_temp(i)) + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
-                    self.diskused       = QLabel(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.DISK_usage_total(i)) + " GB", COLOR_VALUE))
-                    self.diskfree       = QLabel(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.DISK_free(i)) + " GB", COLOR_VALUE))
-
+                    self.disktotal = QLabel(color(str(self.sys.DISK_total(i)) + " GB", COLOR_VALUE))
+                    self.disktemp[i] = QLabel(color(str(self.sys.DISK_temp(i)) + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
+                    self.diskused = QLabel(
+                        color(bold("used: "), COLOR_TEXT) + color(str(self.sys.DISK_usage_total(i)) + " GB",
+                                                                  COLOR_VALUE))
+                    self.diskfree = QLabel(
+                        color(bold("free: "), COLOR_TEXT) + color(str(self.sys.DISK_free(i)) + " GB", COLOR_VALUE))
 
                     self.diskbar[i] = QProgressBar()
                     self.diskbar[i].setTextVisible(False)
@@ -262,25 +273,25 @@ class Window(QMainWindow):
 
             self.diskTab.setStyleSheet(STYLE_ALL)
 
-        #NET Info
+        # NET Info
         if "NET" in self.modules:
-            self.netTab         = QTabWidget()
-            self.netFrame       = [0] * len(self.sys.nets)
-            self.netName        = [0] * len(self.sys.nets)
-            self.netaddress     = [0] * len(self.sys.nets)
-            self.netupspeed     = [0] * len(self.sys.nets)
-            self.netdownspeed   = [0] * len(self.sys.nets)
+            self.netTab = QTabWidget()
+            self.netFrame = [0] * len(self.sys.nets)
+            self.netName = [0] * len(self.sys.nets)
+            self.netaddress = [0] * len(self.sys.nets)
+            self.netupspeed = [0] * len(self.sys.nets)
+            self.netdownspeed = [0] * len(self.sys.nets)
 
-            for i,net in enumerate(self.sys.nets):
-                self.netFrame[i]    = QWidget()
-                self.netBox         = QGridLayout(self.netFrame[i])
+            for i, net in enumerate(self.sys.nets):
+                self.netFrame[i] = QWidget()
+                self.netBox = QGridLayout(self.netFrame[i])
 
-                self.netName[i]      = self.sys.NET_name(net)
-                self.netname         = QLabel(color(self.sys.NET_name(net), COLOR_VALUE))
-                self.netaddress[i]   = QLabel(color(self.sys.NET_address(net), COLOR_VALUE))
-                self.netupGraph      = QLabel("")
-                self.netdownGraph    = QLabel("")
-                self.netupspeed[i]   = QLabel(color(str(self.sys.NET_upspeed(net)) + " kB/s", COLOR_VALUE))
+                self.netName[i] = self.sys.NET_name(net)
+                self.netname = QLabel(color(self.sys.NET_name(net), COLOR_VALUE))
+                self.netaddress[i] = QLabel(color(self.sys.NET_address(net), COLOR_VALUE))
+                self.netupGraph = QLabel("")
+                self.netdownGraph = QLabel("")
+                self.netupspeed[i] = QLabel(color(str(self.sys.NET_upspeed(net)) + " kB/s", COLOR_VALUE))
                 self.netdownspeed[i] = QLabel(color(str(self.sys.NET_downspeed(net)) + " kB/s", COLOR_VALUE))
 
                 self.netBox.addWidget(QLabel(color(bold("NET"), COLOR_HEADER)), 0, 0, 1, 3, Qt.AlignCenter)
@@ -325,21 +336,20 @@ class Window(QMainWindow):
             else:
                 self.mainVBox.addWidget(self.netFrame)
 
-
     def updateUI(self):
-        #Update Systembox
+        # Update Systembox
         if "SYSTEM" in self.modules:
             self.time.setText(color(bold(day[datetime.today().weekday()] + strftime(":  %d-%m-%Y  %H:%M:%S",
-                localtime())), COLOR_EXTRA))
+                                                                                    localtime())), COLOR_EXTRA))
 
-        #Update CPUbox
+        # Update CPUbox
         if "CPU" in self.modules:
             self.sys.CPU()
             for i in range(0, self.sys.cpus):
                 self.cpu[i].setText(color(str(self.sys.CPU_temp(i)) + " " + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
                 self.cpuBar[i].setValue(self.sys.CPU_usage(i))
 
-        #Update GPUbox
+        # Update GPUbox
         if "GPU" in self.modules:
             self.sys.GPU()
             if self.sys.gpuType < 2:
@@ -351,59 +361,66 @@ class Window(QMainWindow):
                 self.gpufan.setText(color(italic(str(self.sys.GPU_usage_fan()) + " %"), COLOR_VALUE))
                 self.gpuram.setText(color(italic(str(self.sys.GPU_usage_mem()) + " %"), COLOR_VALUE))
                 self.gputemp.setText(color(str(self.sys.GPU_temp()) + " " + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
-                self.gpuused.setText(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.GPU_MEM_used()) + " MB", COLOR_VALUE))
-                self.gpufree.setText(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.GPU_MEM_free()) + " MB", COLOR_VALUE))
+                self.gpuused.setText(
+                    color(bold("used: "), COLOR_TEXT) + color(str(self.sys.GPU_MEM_used()) + " MB", COLOR_VALUE))
+                self.gpufree.setText(
+                    color(bold("free: "), COLOR_TEXT) + color(str(self.sys.GPU_MEM_free()) + " MB", COLOR_VALUE))
 
-        #Update RAMbox
+        # Update RAMbox
         if "RAM" in self.modules:
             self.sys.RAM()
             self.rambar.setValue(self.sys.RAM_usage_total())
-            self.ramused.setText(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.RAM_usage_total())+" MB", COLOR_VALUE))
-            self.ramfree.setText(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.RAM_free())+" MB", COLOR_VALUE))
+            self.ramused.setText(
+                color(bold("used: "), COLOR_TEXT) + color(str(self.sys.RAM_usage_total()) + " MB", COLOR_VALUE))
+            self.ramfree.setText(
+                color(bold("free: "), COLOR_TEXT) + color(str(self.sys.RAM_free()) + " MB", COLOR_VALUE))
 
-        #Update SWAPbox
+        # Update SWAPbox
         if "SWAP" in self.modules:
             self.sys.SWAP()
             self.swapbar.setValue(self.sys.SWAP_usage_total())
-            self.swapused.setText(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.SWAP_usage_total())+" MB", COLOR_VALUE))
-            self.swapfree.setText(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.SWAP_free())+" MB", COLOR_VALUE))
+            self.swapused.setText(
+                color(bold("used: "), COLOR_TEXT) + color(str(self.sys.SWAP_usage_total()) + " MB", COLOR_VALUE))
+            self.swapfree.setText(
+                color(bold("free: "), COLOR_TEXT) + color(str(self.sys.SWAP_free()) + " MB", COLOR_VALUE))
 
-        #Update NETbox
+        # Update NETbox
         if "NET" in self.modules:
             self.sys.NET()
             for i in range(0, len(self.sys.nets)):
                 self.netupspeed[i].setText(color(str(self.sys.NET_upspeed("Ethernet")) + " kB/s", COLOR_VALUE))
                 self.netdownspeed[i].setText(color(str(self.sys.NET_downspeed("Ethernet")) + " kB/s", COLOR_VALUE))
 
-
     def updateUIby5(self):
         self.sys.RAM()
         self.sys.SWAP()
 
-        #Update RAMbox
+        # Update RAMbox
         self.rambar.setValue(self.sys.RAM_usage_total())
-        self.ramused.setText(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.RAM_usage_total())+" MB", COLOR_VALUE))
-        self.ramfree.setText(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.RAM_free())+" MB", COLOR_VALUE))
+        self.ramused.setText(
+            color(bold("used: "), COLOR_TEXT) + color(str(self.sys.RAM_usage_total()) + " MB", COLOR_VALUE))
+        self.ramfree.setText(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.RAM_free()) + " MB", COLOR_VALUE))
 
-        #Update SWAPbox
+        # Update SWAPbox
         self.swapbar.setValue(self.sys.SWAP_usage_total())
-        self.swapused.setText(color(bold("used: "), COLOR_TEXT) + color(str(self.sys.SWAP_usage_total())+" MB", COLOR_VALUE))
-        self.swapfree.setText(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.SWAP_free())+" MB", COLOR_VALUE))
+        self.swapused.setText(
+            color(bold("used: "), COLOR_TEXT) + color(str(self.sys.SWAP_usage_total()) + " MB", COLOR_VALUE))
+        self.swapfree.setText(color(bold("free: "), COLOR_TEXT) + color(str(self.sys.SWAP_free()) + " MB", COLOR_VALUE))
 
     def updateUIby30(self):
         self.sys.DISK()
 
-        #Update DISKbox
+        # Update DISKbox
         for i in range(0, len(self.sys.disks)):
             self.disktemp[i].setText(color(str(self.sys.DISK_temp(i)) + u'\N{DEGREE SIGN}' + "C", COLOR_VALUE))
             self.diskbar[i].setValue(self.sys.DISK_usage_total(i))
 
     def showProperties(self):
-        self.propFrame  = QFrame()
-        self.propBox    = QGridLayout(self.propFrame)
+        self.propFrame = QFrame()
+        self.propBox = QGridLayout(self.propFrame)
 
-        self.propCPU    = QLabel(color(str(self.sys.cpus), COLOR_VALUE))
-        self.propGPU    = QLabel(color(self.sys.GPU_name(), COLOR_VALUE))
+        self.propCPU = QLabel(color(str(self.sys.cpus), COLOR_VALUE))
+        self.propGPU = QLabel(color(self.sys.GPU_name(), COLOR_VALUE))
 
         self.propBox.addWidget(QLabel(color(bold("CPU's:"), COLOR_TEXT)), 1, 0, 1, 1, Qt.AlignLeft)
         self.propBox.addWidget(self.propCPU, 1, 1, 1, 1, Qt.AlignRight)
@@ -423,11 +440,14 @@ class Window(QMainWindow):
             self.setWindowFlags(Qt.CustomizeWindowHint | Qt.FramelessWindowHint)
             self.show()
 
+
 def bold(text):
     return "<b>" + text + "</b>"
 
+
 def italic(text):
     return "<i>" + text + "</i>"
+
 
 def color(text, color):
     return "<font color='" + color + "'>" + text + "</font>"

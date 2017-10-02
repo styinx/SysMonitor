@@ -1,5 +1,6 @@
 from etc.settings import *
 
+TRANSPARENT			= "rgba(0, 0, 0, 0)"
 
 COLOR_BACKGROUND    = SETTINGS.get("Colors", "background")
 COLOR_SYSTEM        = SETTINGS.get("Colors", "system")
@@ -60,8 +61,8 @@ STYLE_TABWIDGET   = """ QTabWidget
                         }
                         QTabBar
                         {
-                            border-bottom: 1px solid """ + COLOR_VALUE + """;
-                            background: rgba(0,0,0,0);
+                            border-bottom: 1px solid """ + TRANSPARENT + """;
+                            background: """ + TRANSPARENT + """;
                         }
                         QTabBar::tab
                         {
@@ -69,7 +70,7 @@ STYLE_TABWIDGET   = """ QTabWidget
                             min-width: 20px;
                             padding: 0px 3px 0px 3px;
                             margin: 0px 1px 0px 1px;
-                            border-bottom: 1px solid """ + COLOR_VALUE + """;
+                            border-bottom: 1px solid """ + COLOR_TAB_ACTIVE + """;
                             border-top-left-radius: 2px;
                             border-top-right-radius: 2px;
                             color: """ + COLOR_TEXT + """;
@@ -77,7 +78,7 @@ STYLE_TABWIDGET   = """ QTabWidget
                         }
                         QTabBar::tab:selected
                         {
-                            border-bottom: 1px solid """ + COLOR_INNER + """;
+                            border-bottom: 1px solid """ + COLOR_TAB + """;
                             color: """ + COLOR_TEXT + """;
                             background: """ + COLOR_TAB_ACTIVE + """;
                         }

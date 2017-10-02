@@ -9,6 +9,7 @@ BYTE_TO_MEGABYTE = 1024 * 1024
 BYTE_TO_GIGABYTE = 1024 * 1024 * 1024
 BYTE_TO_MEGABITS = 0.8 * 100000
 
+
 class SysInfo():
     def __init__(self):
         self.erros = 1
@@ -40,28 +41,28 @@ class SysInfo():
         self.USER()
 
     def info(self):
-        print("%-30s%-20s" %("Operating System:", self.os))
-        print("%-30s%-20s" %("System Name:", self.osName))
-        print("%-30s%-20s" %("System Version:", self.osVersion))
-        print("%-30s%-20s" %("System Architecture:", self.osArchitecture))
-        print("%-30s%-20s" %("CPU's:", self.cpus))
-        print("%-30s%-20s%-20s" %("CPU Usage:", "", self.CPU_usage()))
-        print("%-30s%-20s%-20s" %("GPU Usage:", "", self.GPU_usage_gpu()))
-        print("%-30s%-20s" %("RAM total:", self.RAM_total()))
-        print("%-30s%-20s" %("RAM free:", self.RAM_free()))
-        print("%-30s%-20s%-29s" %("RAM Usage:", self.RAM_usage_total(), self.RAM_usage_percent()))
-        print("%-30s%-20s" %("SWAP total:", self.SWAP_total()))
-        print("%-30s%-20s" %("SWAP free:", self.SWAP_free()))
-        print("%-30s%-20s%-29s" %("SWAP Usage:", self.SWAP_usage_total(), self.SWAP_usage_percent()))
-        print("%-30s%-20s" %("DISK total:", self.DISK_total()))
-        print("%-30s%-20s" %("DISK free:", self.DISK_free()))
-        print("%-30s%-20s%-29s" %("DISK Usage:", self.DISK_usage_total(), self.DISK_usage_percent()))
-        print("%-30s%-20s" %("NET Name:", self.NET_name()))
-        print("%-30s%-20s" %("NET Address:", self.NET_address()))
-        print("%-30s%-20s" %("NET Up-speed:", self.NET_upspeed()))
-        print("%-30s%-20s" %("NET Down-speed:", self.NET_downspeed()))
-        print("%-30s%-20s" %("USER user:", self.USER_user()))
-        print("%-30s%-20s" %("USER uptime:", self.USER_uptime()))
+        print("%-30s%-20s" % ("Operating System:", self.os))
+        print("%-30s%-20s" % ("System Name:", self.osName))
+        print("%-30s%-20s" % ("System Version:", self.osVersion))
+        print("%-30s%-20s" % ("System Architecture:", self.osArchitecture))
+        print("%-30s%-20s" % ("CPU's:", self.cpus))
+        print("%-30s%-20s%-20s" % ("CPU Usage:", "", self.CPU_usage()))
+        print("%-30s%-20s%-20s" % ("GPU Usage:", "", self.GPU_usage_gpu()))
+        print("%-30s%-20s" % ("RAM total:", self.RAM_total()))
+        print("%-30s%-20s" % ("RAM free:", self.RAM_free()))
+        print("%-30s%-20s%-29s" % ("RAM Usage:", self.RAM_usage_total(), self.RAM_usage_percent()))
+        print("%-30s%-20s" % ("SWAP total:", self.SWAP_total()))
+        print("%-30s%-20s" % ("SWAP free:", self.SWAP_free()))
+        print("%-30s%-20s%-29s" % ("SWAP Usage:", self.SWAP_usage_total(), self.SWAP_usage_percent()))
+        print("%-30s%-20s" % ("DISK total:", self.DISK_total()))
+        print("%-30s%-20s" % ("DISK free:", self.DISK_free()))
+        print("%-30s%-20s%-29s" % ("DISK Usage:", self.DISK_usage_total(), self.DISK_usage_percent()))
+        print("%-30s%-20s" % ("NET Name:", self.NET_name()))
+        print("%-30s%-20s" % ("NET Address:", self.NET_address()))
+        print("%-30s%-20s" % ("NET Up-speed:", self.NET_upspeed()))
+        print("%-30s%-20s" % ("NET Down-speed:", self.NET_downspeed()))
+        print("%-30s%-20s" % ("USER user:", self.USER_user()))
+        print("%-30s%-20s" % ("USER uptime:", self.USER_uptime()))
 
     def update(self):
         self.CPU()
@@ -84,7 +85,7 @@ class SysInfo():
                     if sensor.Name[:-3] == "CPU Core":
                         self.cpu_temp[sensor.Index] = sensor.Value
         except wmi.x_wmi:
-            print (u'WMI Exception. Is Open Hardware Monitor running?')
+            print(u'WMI Exception. Is Open Hardware Monitor running?')
 
     def GPU(self):
         if self.gpuType <= 1:
@@ -112,10 +113,11 @@ class SysInfo():
         self.swap = psutil.swap_memory()
 
     def DISK(self):
-        for i,d in enumerate(self.disks):
+        for i, d in enumerate(self.disks):
             if self.disks[i][2]:
                 self.disk_temp[i] = 0
-                self.disk[i] = psutil.disk_usage(self.drive[i])
+                if self.drive[i] == d[0][:-1]:
+                    self.disk[i] = psutil.disk_usage(self.drive[i])
 
                 try:
                     w = wmi.WMI(namespace="root\OpenHardwareMonitor")
@@ -125,7 +127,7 @@ class SysInfo():
                             self.disk_temp[i] = sensor.Value
                 except wmi.x_wmi:
                     if self.erros >= 1:
-                        print (u'OpenHardwareMonitor is not running...')
+                        print(u'OpenHardwareMonitor is not running...')
 
     def NET(self):
         self.netspeed = psutil.net_io_counters(pernic=True)

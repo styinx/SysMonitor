@@ -1,0 +1,36 @@
+#centralWidget
+{
+	font-family: Arial 10pt;
+}
+
+QLabel
+{
+	color: #FF0000;
+	font-weight: bold;
+}
+
+#headerValue
+{
+	color: #FF0000;
+}
+
+#key
+{
+	color: #DDDDDD;
+	font-weight: bold;
+}
+
+#value
+{
+	color: #3333FF;
+}
+
+#inner
+{
+	color: #DD9955;
+}
+
+#outter
+{
+	color: #00FF55;
+}
